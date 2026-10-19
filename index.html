@@ -41,7 +41,7 @@ h1{font-size:clamp(2.4rem,9vw,4.2rem)} h2{font-size:clamp(1.9rem,6vw,2.8rem);mar
 .btn.nhat{background:#fff;color:var(--chu);box-shadow:0 6px 16px rgba(194,56,106,.15)}
 
 /* Màn 1: phong thư */
-.thu{font-size:6rem;cursor:pointer;animation:nhun 1.6s infinite;filter:drop-shadow(0 10px 14px rgba(255,122,162,.5))}
+.thu{font-size:6rem;cursor:pointer;animation:nhun 1.6s infinite}
 @keyframes nhun{50%{transform:translateY(-14px) rotate(-4deg)}}
 .phu{margin-top:10px;font-size:1.1rem}
 
@@ -96,7 +96,7 @@ h1{font-size:clamp(2.4rem,9vw,4.2rem)} h2{font-size:clamp(1.9rem,6vw,2.8rem);mar
 body.buon #nen-buon{opacity:1}
 body.buon #nhac{background:#dfe3f0}
 #m7 h2,body.buon #m8 h2,body.buon #m8 p{color:#f0ecf7}
-#m7 .giay{background:rgba(255,255,255,.1);border:2px dashed rgba(220,225,245,.5);color:#f1eef7;box-shadow:0 14px 40px rgba(30,35,60,.35);backdrop-filter:blur(3px)}
+#m7 .giay{background:rgba(255,255,255,.1);border:2px dashed rgba(220,225,245,.5);color:#f1eef7;box-shadow:0 14px 40px rgba(30,35,60,.35)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -272,6 +272,18 @@ $("nhac").onclick = () => {
 const cv = $("fx"), ctx = cv.getContext("2d");
 let hat = [];
 const TOC_DO = 2.5;     // ✏️ TỐC ĐỘ HIỆU ỨNG NỀN: 1 = chậm như cũ, 2.5 = nhanh hơn, 4 = rất nhanh
+// Vẽ emoji bằng chữ rất nặng, nên mỗi emoji chỉ vẽ MỘT lần vào "ảnh nhỏ" rồi dùng lại
+const khoAnh = {};
+function anhEmoji(ch, s){
+  const key = ch + s;
+  if(khoAnh[key]) return khoAnh[key];
+  const size = Math.ceil(s*1.6), c = document.createElement("canvas");
+  c.width = c.height = size;
+  const g = c.getContext("2d");
+  g.font = s+"px serif"; g.textAlign = "center"; g.textBaseline = "middle";
+  g.fillText(ch, size/2, size/2);
+  return khoAnh[key] = c;
+}
 let buonMode = false;   // true = đang ở màn buồn (mưa rơi)
 function taoHatBuon(){  // tim vỡ, hoa héo rơi chậm
   hat.push({x:Math.random()*cv.width,y:-30,vx:Math.random()-.5,vy:(.4+Math.random()*.6)*TOC_DO,
@@ -297,19 +309,24 @@ function ve(){
     for(let k=0;k<4;k++) hat.push({x:Math.random()*(cv.width+200),y:-20,vx:-2,vy:13+Math.random()*6,
       s:0,r:0,vr:0,g:0,song:1e9,mua:true,ch:""});
     if(Math.random()<.025*TOC_DO) taoHatBuon();
-  } else if(Math.random()<.08*TOC_DO) taoHatRoi();
+  } else if(hat.length < 90 && Math.random()<.08*TOC_DO) taoHatRoi();   // tối đa 90 hạt cho nhẹ
   hat = hat.filter(p => p.y < cv.height+40 && p.song > 0);
+  ctx.beginPath();   // gom toàn bộ hạt mưa vào một đường vẽ duy nhất
   for(const p of hat){
     p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.r+=p.vr; p.song--;
     if(p.mua){
-      ctx.strokeStyle="rgba(200,212,240,.5)"; ctx.lineWidth=1.2;
-      ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-p.vx*1.5,p.y-p.vy*1.5); ctx.stroke();
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-p.vx*1.5,p.y-p.vy*1.5);
       continue;
     }
-    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+    const sp = anhEmoji(p.ch, Math.max(12, Math.round(p.s/4)*4));
+    const c = Math.cos(p.r), sn = Math.sin(p.r);
     ctx.globalAlpha = Math.min(1,p.song/40);
-    ctx.font = p.s+"px serif"; ctx.textAlign="center"; ctx.fillText(p.ch,0,0); ctx.restore();
+    ctx.setTransform(c,sn,-sn,c,p.x,p.y);
+    ctx.drawImage(sp,-sp.width/2,-sp.height/2);
   }
+  ctx.setTransform(1,0,0,1,0,0); ctx.globalAlpha = 1;
+  ctx.strokeStyle = "rgba(200,212,240,.5)"; ctx.lineWidth = 1.2; ctx.stroke();   // vẽ tất cả hạt mưa một lần
   requestAnimationFrame(ve);
 }
 ve();
