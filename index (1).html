@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gửi bạn nhân ngày 20/10 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ===== MÀU SẮC: đổi ở đây nếu muốn ===== */
+:root{
+  --nen1:#ffe3ec; --nen2:#fff4f8;
+  --hong:#ffc2d6; --hong-dam:#ff8fb1; --chu:#c2386a; --chu-nhat:#7a4358;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Quicksand',system-ui,sans-serif; color:var(--chu-nhat);
+  background:linear-gradient(160deg,var(--nen1),var(--nen2) 60%,#ffd9e6);
+  overflow:hidden;
+}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:1}
+h1,h2{font-family:'Dancing Script',cursive;color:var(--chu);font-weight:700}
+h1{font-size:clamp(2.4rem,9vw,4.2rem)} h2{font-size:clamp(1.9rem,6vw,2.8rem);margin-bottom:14px}
+
+/* Mỗi "màn hình" là một .screen, chỉ màn có class .active mới hiện */
+.screen{
+  position:absolute;inset:0;z-index:2;display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;overflow-y:auto;
+}
+.screen.active{display:flex;animation:hien .8s ease}
+@keyframes hien{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+
+.btn{
+  font:600 1.05rem 'Quicksand',sans-serif; color:#fff; cursor:pointer;
+  background:linear-gradient(135deg,#ff9ebb,#ff7aa2); border:0;
+  padding:13px 30px; border-radius:50px; margin-top:22px;
+  box-shadow:0 8px 20px rgba(255,122,162,.4); transition:transform .2s;
+}
+.btn:hover{transform:translateY(-3px) scale(1.04)}
+.btn.nhat{background:#fff;color:var(--chu);box-shadow:0 6px 16px rgba(194,56,106,.15)}
+
+/* Màn 1: phong thư */
+.thu{font-size:6rem;cursor:pointer;animation:nhun 1.6s infinite;filter:drop-shadow(0 10px 14px rgba(255,122,162,.5))}
+@keyframes nhun{50%{transform:translateY(-14px) rotate(-4deg)}}
+.phu{margin-top:10px;font-size:1.1rem}
+
+/* Màn 2: lá thư */
+.giay{
+  background:#fffafc; border:2px dashed var(--hong); border-radius:20px;
+  padding:30px 26px; max-width:560px; width:100%; min-height:240px;
+  box-shadow:0 14px 40px rgba(255,143,177,.3); text-align:left;
+  line-height:1.9; font-size:1.08rem; white-space:pre-line;
+}
+
+/* Màn 3: ảnh + đếm ngày */
+.khung{
+  background:#fff; padding:12px 12px 40px; border-radius:6px; transform:rotate(-2deg);
+  box-shadow:0 14px 34px rgba(194,56,106,.25); width:min(78vw,320px); position:relative;
+}
+.khung .anh{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,var(--hong),#ffe6ef);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:.95rem;padding:12px}
+.khung img{width:100%;height:100%;object-fit:cover}
+.khung .cap{position:absolute;bottom:9px;left:0;right:0;font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--chu)}
+.dieu-khien{display:flex;gap:12px;align-items:center;margin-top:20px}
+.tron{width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:var(--chu);font-size:1.2rem;cursor:pointer;box-shadow:0 4px 12px rgba(194,56,106,.2)}
+.dem{margin-top:18px;background:rgba(255,255,255,.7);padding:10px 20px;border-radius:30px;font-weight:600}
+.dem b{color:var(--chu);font-size:1.3rem}
+
+/* Màn 4: lý do */
+.the{
+  background:#fff;border-radius:22px;padding:30px 24px;max-width:420px;width:100%;
+  min-height:130px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 30px rgba(255,143,177,.3);font-size:1.15rem;line-height:1.6;
+  animation:hien .5s ease;
+}
+
+/* Màn 5: câu hỏi */
+.hang{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;min-height:90px}
+#co{transition:transform .25s}
+
+/* Màn 6: bất ngờ */
+.tim-lon{font-size:7rem;animation:dap 1s infinite}
+@keyframes dap{0%,100%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(.97)}}
+#dem-nguoc{font:700 7rem 'Dancing Script',cursive;color:var(--chu)}
+.qua{font-size:4.5rem;cursor:pointer;animation:nhun 1.4s infinite}
+.thiep{
+  background:#fffafc;border:3px solid var(--hong);border-radius:24px;padding:28px 24px;max-width:480px;
+  box-shadow:0 16px 44px rgba(255,143,177,.45);line-height:1.8;margin-top:12px;
+}
+.an{display:none}
+
+/* Nút nhạc */
+#nhac{position:fixed;top:14px;right:14px;z-index:5;width:46px;height:46px;border-radius:50%;border:0;background:#fff;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 14px rgba(194,56,106,.25)}
+/* Màn 7: kết thúc buồn (nền xám xanh mờ dần hiện ra) */
+#nen-buon{position:fixed;inset:0;z-index:0;opacity:0;transition:opacity 3s;background:linear-gradient(170deg,#5d6985,#8a93ae 55%,#b9aec4)}
+body.buon #nen-buon{opacity:1}
+body.buon #nhac{background:#dfe3f0}
+#m7 h2,body.buon #m8 h2,body.buon #m8 p{color:#f0ecf7}
+#m7 .giay{background:rgba(255,255,255,.1);border:2px dashed rgba(220,225,245,.5);color:#f1eef7;box-shadow:0 14px 40px rgba(30,35,60,.35);backdrop-filter:blur(3px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div id="nen-buon"></div>
+<canvas id="fx"></canvas>
+<button id="nhac" title="Bật/tắt nhạc">🎵</button>
+<audio id="audio" loop></audio>
+
+<!-- ============ MÀN 1: MỞ THƯ ============ -->
+<section class="screen active" id="m1">
+  <h1>Gửi <span class="ten"></span> 💌</h1>
+  <p class="phu">Có một bức thư nhỏ đang chờ bạn...</p>
+  <div class="thu" id="mo-thu" role="button" tabindex="0">💌</div>
+  <p class="phu">Chạm vào phong thư để mở nhé</p>
+</section>
+
+<!-- ============ MÀN 2: LÁ THƯ ============ -->
+<section class="screen" id="m2">
+  <h2>Thư gửi <span class="ten"></span></h2>
+  <div class="giay" id="noi-dung-thu"></div>
+  <button class="btn an" id="tiep2">Xem tiếp nhé 🌸</button>
+</section>
+
+<!-- ============ MÀN 3: KỶ NIỆM ============ -->
+<section class="screen" id="m3">
+  <h2>Những khoảnh khắc của chúng mình</h2>
+  <div class="khung">
+    <div class="anh" id="anh"></div>
+    <div class="cap" id="cap"></div>
+  </div>
+  <div class="dieu-khien">
+    <button class="tron" id="truoc">❮</button>
+    <button class="tron" id="sau">❯</button>
+  </div>
+  <div class="dem">Mình quen nhau được <b id="so-ngay">0</b> ngày 💞</div>
+  <button class="btn" id="tiep3">Tiếp tục 💗</button>
+</section>
+
+<!-- ============ MÀN 4: LÝ DO ============ -->
+<section class="screen" id="m4">
+  <h2>Vì sao mình thích <span class="ten"></span>?</h2>
+  <div class="the" id="ly-do"></div>
+  <button class="btn nhat" id="ly-do-tiep">Còn nữa không? ✨</button>
+  <button class="btn an" id="tiep4">Mình có điều muốn hỏi 💗</button>
+</section>
+
+<!-- ============ MÀN 5: CÂU HỎI ============ -->
+<section class="screen" id="m5">
+  <h1>Mình có thể là người đặc biệt của <span class="ten"></span> không? 🥺</h1>
+  <p class="phu" id="goi-y">Mình đã hồi hộp lắm đó...</p>
+  <div class="hang">
+    <button class="btn" id="co">Có 💖</button>
+    <button class="btn nhat" id="khong">Để mình suy nghĩ</button>
+  </div>
+</section>
+
+<!-- ============ MÀN 6: BẤT NGỜ CUỐI ============ -->
+<section class="screen" id="m6">
+  <div id="dem-nguoc"></div>
+  <div class="an" id="bat-ngo">
+    <div class="tim-lon">💖</div>
+    <h1>Yay! Cảm ơn <span class="ten"></span> 🥹</h1>
+    <p class="phu">Chúc <span class="ten"></span> một ngày 20/10 thật ngọt ngào 🌹</p>
+    <div class="qua" id="qua">🎁</div>
+    <p class="phu" id="qua-goi-y">Chạm vào hộp quà để nhận điều bất ngờ nhé</p>
+    <div class="thiep an" id="thiep"></div>
+    <div class="hang">
+      <button class="btn nhat" id="quay-vui">↩ Quay lại</button>
+      <button class="btn" id="thoat-vui">Thoát 👋</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÀN 7: KẾT THÚC BUỒN (khi bấm "Để mình suy nghĩ") ============ -->
+<section class="screen" id="m7">
+  <h2>Cảm ơn <span class="ten"></span> 🥀</h2>
+  <div class="giay" id="noi-dung-buon"></div>
+  <div class="hang an" id="nut-buon">
+    <button class="btn nhat" id="quay-buon">↩ Quay lại</button>
+    <button class="btn nhat" id="thoat-buon">Thoát</button>
+  </div>
+</section>
+
+<!-- ============ MÀN 8: TẠM BIỆT (sau khi bấm Thoát) ============ -->
+<section class="screen" id="m8">
+  <h2 id="tam-biet-tieu-de"></h2>
+  <p class="phu" id="tam-biet-chu"></p>
+</section>
+
+<script>
+/* =====================================================
+   ✏️ KHU VỰC CHỈNH SỬA — CHỈ CẦN SỬA PHẦN NÀY
+   ===================================================== */
+const CONFIG = {
+  // 1) Tên: thay "___" bằng tên thật
+  tenNguoiNhan: "___",
+  tenCuaBan: "___",
+
+  // 2) Ngày hai bạn bắt đầu quen (định dạng: năm-tháng-ngày)
+  ngayQuenNhau: "2026-08-01",
+
+  // 3) Nhạc: bỏ file mp3 vào thư mục "music" rồi sửa tên ở đây
+  nhac: "music/nhac.mp3",
+
+  // 4) Ảnh: bỏ ảnh vào thư mục "images" rồi sửa tên + lời chú thích
+  anh: [
+    { src: "images/anh1.jpg", chuThich: "Lần đầu mình nói chuyện" },
+    { src: "images/anh2.jpg", chuThich: "Một ngày thật vui" },
+    { src: "images/anh3.jpg", chuThich: "Nụ cười của bạn" }
+  ],
+
+  // 5) Lá thư (mỗi dòng trong ngoặc là một đoạn)
+  thu: [
+    "Chào {ten},",
+    "Nhân ngày 20/10, mình muốn gửi bạn một lời chúc thật nhỏ và một điều thật thật lòng.",
+    "Từ khi hai đứa mình trò chuyện, mỗi ngày của mình đều có thêm một lý do để mỉm cười.",
+    "Mình không giỏi nói những lời hoa mỹ, nên mình làm một trang web nhỏ này để nói thay mình.",
+    "— {tenBan}"
+  ],
+
+  // 6) Các lý do thích bạn
+  lyDo: [
+    "Nụ cười của bạn làm mình quên hết mệt mỏi 😊",
+    "Bạn luôn biết lắng nghe và quan tâm người khác 💞",
+    "Nói chuyện với bạn, thời gian trôi nhanh lắm ⏰",
+    "Bạn làm những điều bình thường trở nên đáng nhớ 🌷",
+    "Và đơn giản là... mình thích bạn 💗"
+  ],
+
+  // 7) Lời trong hộp quà bất ngờ
+  thiepCuoi: "Chúc {ten} 20/10 luôn xinh đẹp và hạnh phúc!\nMình hứa sẽ từ từ, chân thành và luôn tôn trọng bạn.\nCuối tuần này mình mời bạn đi uống trà sữa nhé? 🧋\n\n— {tenBan}",
+
+  // 8) Lời cuối khi bấm "Để mình suy nghĩ" sau 5 lần nút chạy trốn
+  thuBuon: "Mình hiểu rồi... 🌧️\n\nCảm ơn {ten} vì đã dành thời gian trò chuyện cùng mình, vì những lần mình được cười, và vì đã luôn tử tế với mình.\n\nMình hơi buồn một chút, nhưng mình ổn thật mà, bạn đừng lo nhé 🙂 Mình không hối hận vì đã nói ra, và mong tụi mình vẫn có thể là bạn tốt của nhau.\n\nMong {ten} luôn vui và thật hạnh phúc. Cảm ơn bạn vì mọi thứ.\n\n— {tenBan}"
+};
+
+/* =====================================================
+   ⚙️ PHẦN XỬ LÝ — người mới có thể không cần sửa
+   ===================================================== */
+const $ = id => document.getElementById(id);
+const thayTen = s => s.replaceAll("{ten}", CONFIG.tenNguoiNhan).replaceAll("{tenBan}", CONFIG.tenCuaBan);
+document.querySelectorAll(".ten").forEach(e => e.textContent = CONFIG.tenNguoiNhan);
+
+// Chuyển màn hình
+function chuyen(id){
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  $(id).classList.add("active");
+}
+
+// ---------- Nhạc ----------
+const audio = $("audio");
+audio.src = CONFIG.nhac;
+let nhacBat = false;
+function batNhac(){ audio.play().then(()=>{nhacBat=true;$("nhac").textContent="🎵"}).catch(()=>{}); }
+$("nhac").onclick = () => {
+  if(nhacBat){ audio.pause(); nhacBat=false; $("nhac").textContent="🔇"; } else batNhac();
+};
+
+// ---------- Hiệu ứng tim rơi + pháo hoa ----------
+const cv = $("fx"), ctx = cv.getContext("2d");
+let hat = [];
+let buonMode = false;   // true = đang ở màn buồn (mưa rơi)
+function taoHatBuon(){  // tim vỡ, hoa héo rơi chậm
+  hat.push({x:Math.random()*cv.width,y:-30,vx:Math.random()-.5,vy:.4+Math.random()*.6,
+    s:16+Math.random()*10,r:0,vr:(Math.random()-.5)*.02,g:0,song:1e9,ch:Math.random()<.5?"💔":"🥀"});
+}
+function coKichThuoc(){ cv.width = innerWidth; cv.height = innerHeight; }
+coKichThuoc(); addEventListener("resize", coKichThuoc);
+const bieuTuong = ["💗","🌸","💖","🌷","✿"];
+function taoHatRoi(){
+  hat.push({x:Math.random()*cv.width,y:-30,vx:Math.random()-.5,vy:.6+Math.random()*1.2,
+    s:14+Math.random()*16,r:0,vr:(Math.random()-.5)*.03,g:0,song:1e9,ch:bieuTuong[Math.floor(Math.random()*5)]});
+}
+function phaoHoa(){ // bắn tim tung toé
+  for(let i=0;i<140;i++){
+    const goc=Math.random()*Math.PI*2, luc=3+Math.random()*9;
+    hat.push({x:cv.width/2,y:cv.height/2,vx:Math.cos(goc)*luc,vy:Math.sin(goc)*luc-3,
+      s:16+Math.random()*20,r:0,vr:(Math.random()-.5)*.2,g:.15,song:120+Math.random()*60,ch:bieuTuong[Math.floor(Math.random()*5)]});
+  }
+}
+function ve(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  if(buonMode){
+    for(let k=0;k<4;k++) hat.push({x:Math.random()*(cv.width+200),y:-20,vx:-2,vy:13+Math.random()*6,
+      s:0,r:0,vr:0,g:0,song:1e9,mua:true,ch:""});
+    if(Math.random()<.025) taoHatBuon();
+  } else if(Math.random()<.08) taoHatRoi();
+  hat = hat.filter(p => p.y < cv.height+40 && p.song > 0);
+  for(const p of hat){
+    p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.r+=p.vr; p.song--;
+    if(p.mua){
+      ctx.strokeStyle="rgba(200,212,240,.5)"; ctx.lineWidth=1.2;
+      ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-p.vx*1.5,p.y-p.vy*1.5); ctx.stroke();
+      continue;
+    }
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+    ctx.globalAlpha = Math.min(1,p.song/40);
+    ctx.font = p.s+"px serif"; ctx.textAlign="center"; ctx.fillText(p.ch,0,0); ctx.restore();
+  }
+  requestAnimationFrame(ve);
+}
+ve();
+// Chạm vào đâu cũng nở vài trái tim nhỏ
+document.addEventListener("pointerdown", e => {
+  for(let i=0;i<6;i++) hat.push({x:e.clientX,y:e.clientY,vx:(Math.random()-.5)*4,vy:-Math.random()*4,
+    s:14,r:0,vr:.05,g:.12,song:50,ch:buonMode?"💧":"💗"});
+});
+
+// ---------- Màn 1 -> 2 ----------
+function moThu(){
+  batNhac(); chuyen("m2");
+  const el = $("noi-dung-thu");
+  const chu = thayTen(CONFIG.thu.join("\n\n"));
+  let i = 0;
+  (function go(){
+    el.textContent = chu.slice(0, ++i);
+    if(i < chu.length) setTimeout(go, 38); else $("tiep2").classList.remove("an");
+  })();
+}
+$("mo-thu").onclick = moThu;
+$("mo-thu").onkeydown = e => { if(e.key==="Enter") moThu(); };
+$("tiep2").onclick = () => chuyen("m3");
+
+// ---------- Màn 3: ảnh + đếm ngày ----------
+let viTri = 0;
+function hienAnh(){
+  const a = CONFIG.anh[viTri];
+  const khung = $("anh");
+  khung.innerHTML = "";
+  const img = new Image();
+  img.src = a.src; img.alt = a.chuThich;
+  img.onload = () => khung.appendChild(img);
+  img.onerror = () => khung.textContent = "📷 Chưa có ảnh: " + a.src;  // báo nếu thiếu ảnh
+  $("cap").textContent = a.chuThich;
+}
+$("truoc").onclick = () => { viTri = (viTri-1+CONFIG.anh.length)%CONFIG.anh.length; hienAnh(); };
+$("sau").onclick  = () => { viTri = (viTri+1)%CONFIG.anh.length; hienAnh(); };
+hienAnh();
+$("so-ngay").textContent = Math.max(0, Math.floor((Date.now()-new Date(CONFIG.ngayQuenNhau))/864e5));
+$("tiep3").onclick = () => { chuyen("m4"); hienLyDo(); };
+
+// ---------- Màn 4: lý do ----------
+let lyDoIdx = 0;
+function hienLyDo(){
+  const the = $("ly-do");
+  the.style.animation="none"; the.offsetWidth; the.style.animation="";
+  the.textContent = CONFIG.lyDo[lyDoIdx];
+}
+$("ly-do-tiep").onclick = () => {
+  if(lyDoIdx < CONFIG.lyDo.length-1){ lyDoIdx++; hienLyDo(); }
+  if(lyDoIdx === CONFIG.lyDo.length-1){
+    $("ly-do-tiep").classList.add("an"); $("tiep4").classList.remove("an");
+  }
+};
+$("tiep4").onclick = () => chuyen("m5");
+
+// ---------- Màn 5: câu hỏi (nút "Để mình suy nghĩ" chạy trốn) ----------
+const loiTu = ["Thật không đó? 🥺","Nghĩ lại đi mà~","Mình buồn đó nha 😢","Bấm 'Có' đi mà 💖","Không chạy thoát được đâu 😆"];
+let lanTron = 0, coScale = 1;
+function tron(){
+  const k = $("khong");
+  k.style.position = "fixed";
+  k.style.left = Math.random()*(innerWidth-k.offsetWidth-20)+10 + "px";
+  k.style.top  = Math.random()*(innerHeight-k.offsetHeight-20)+10 + "px";
+  $("goi-y").textContent = loiTu[lanTron++ % loiTu.length];
+  coScale = Math.min(coScale+.18, 2); $("co").style.transform = "scale("+coScale+")";
+  if(lanTron >= LAN_TRON_TOI_DA){   // đủ 5 lần: nút dừng lại, cho phép bấm
+    $("goi-y").textContent = "Vậy là bạn đã quyết định rồi sao... 🥀";
+    $("khong").textContent = "Xin lỗi, mình chưa sẵn sàng";
+  }
+}
+const LAN_TRON_TOI_DA = 5;   // ✏️ đổi số này nếu muốn nút chạy nhiều/ít lần hơn
+$("khong").addEventListener("mouseenter", () => { if(lanTron < LAN_TRON_TOI_DA) tron(); });
+$("khong").addEventListener("touchstart", e => { if(lanTron < LAN_TRON_TOI_DA){ e.preventDefault(); tron(); } });
+$("khong").addEventListener("click", () => { lanTron < LAN_TRON_TOI_DA ? tron() : ketThucBuon(); });
+
+// Kết thúc buồn: nền xám xanh, mưa rơi, lời cảm ơn
+function ketThucBuon(){
+  buonMode = true; hat = [];
+  document.body.classList.add("buon");
+  audio.volume = .35;                      // nhạc nhỏ lại
+  chuyen("m7");
+  const el = $("noi-dung-buon"), chu = thayTen(CONFIG.thuBuon);
+  let i = 0;
+  $("nut-buon").classList.add("an");
+  (function go(){
+    el.textContent = chu.slice(0, ++i);
+    if(i < chu.length) setTimeout(go, 55); else $("nut-buon").classList.remove("an");
+  })();
+}
+$("co").onclick = () => { chuyen("m6"); batNgo(); };
+
+// ---------- Màn 6: bất ngờ cuối ----------
+function batNgo(){
+  let n = 3; const d = $("dem-nguoc"); d.textContent = n;
+  const t = setInterval(() => {
+    n--;
+    if(n > 0){ d.textContent = n; return; }
+    clearInterval(t); d.style.display = "none";
+    $("bat-ngo").classList.remove("an");
+    phaoHoa(); setTimeout(phaoHoa,600); setTimeout(phaoHoa,1200);
+  }, 900);
+}
+$("qua").onclick = () => {
+  $("qua").textContent = "💝"; $("qua-goi-y").style.display = "none";
+  const t = $("thiep"); t.textContent = thayTen(CONFIG.thiepCuoi);
+  t.style.whiteSpace = "pre-line"; t.classList.remove("an");
+  phaoHoa(); phaoHoa();
+};
+
+// ---------- Nút "Quay lại" và "Thoát" (dùng cho cả kết thúc vui và buồn) ----------
+function quayLai(){            // đưa mọi thứ về như ban đầu, quay về màn câu hỏi
+  buonMode = false; hat = [];
+  document.body.classList.remove("buon");
+  audio.volume = 1;
+  lanTron = 0; coScale = 1; $("co").style.transform = "";
+  const k = $("khong");
+  k.style.position = ""; k.style.left = ""; k.style.top = "";
+  k.textContent = "Để mình suy nghĩ";
+  $("goi-y").textContent = "Mình đã hồi hộp lắm đó...";
+  $("dem-nguoc").style.display = ""; $("dem-nguoc").textContent = "";
+  $("bat-ngo").classList.add("an"); $("thiep").classList.add("an");
+  $("qua").textContent = "🎁"; $("qua-goi-y").style.display = "";
+  chuyen("m5");
+}
+function thoat(){              // hiện lời tạm biệt rồi đóng tab
+  if(buonMode){
+    $("tam-biet-tieu-de").textContent = "Cảm ơn vì tất cả 🌙";
+    $("tam-biet-chu").textContent = "Mình ổn nhé. Chúc bạn luôn bình an và hạnh phúc.";
+  } else {
+    $("tam-biet-tieu-de").textContent = "Hẹn gặp lại nhé 💗";
+    $("tam-biet-chu").textContent = "Chúc bạn một ngày 20/10 thật vui! 🌹";
+    phaoHoa();
+  }
+  chuyen("m8");
+  setTimeout(() => {
+    window.close();            // trình duyệt có thể chặn, nên có dự phòng bên dưới
+    setTimeout(() => { location.href = "about:blank"; }, 300);
+  }, 2800);
+}
+$("quay-vui").onclick = quayLai;  $("thoat-vui").onclick = thoat;
+$("quay-buon").onclick = quayLai; $("thoat-buon").onclick = thoat;
+</script>
+</body>
+</html>
