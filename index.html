@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gửi bạn nhân ngày 20/10 💗</title>
+<title>Gửi em nhân ngày 20/10 💗</title>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 <style>
 /* ===== MÀU SẮC: đổi ở đây nếu muốn ===== */
@@ -147,11 +147,11 @@ body.buon #nhac{background:#dfe3f0}
 
 <!-- ============ MÀN 5: CÂU HỎI ============ -->
 <section class="screen" id="m5">
-  <h1>Mình có thể là người đặc biệt của <span class="ten"></span> không? 🥺</h1>
-  <p class="phu" id="goi-y">Mình đã hồi hộp lắm đó...</p>
+  <h1>Ạnh có thể là người đặc biệt của <span class="ten"></span> không? ☺️</h1>
+  <p class="phu" id="goi-y"> Hồi hộp lắm đó...</p>
   <div class="hang">
     <button class="btn" id="co">Có 💖</button>
-    <button class="btn nhat" id="khong">Để mình suy nghĩ</button>
+    <button class="btn nhat" id="khong">Để em suy nghĩ</button>
   </div>
 </section>
 
@@ -217,9 +217,9 @@ const CONFIG = {
   // 5) Lá thư (mỗi dòng trong ngoặc là một đoạn)
   thu: [
     "Chào {ten},",
-    "Nhân ngày 20/10, mình muốn gửi bạn một lời chúc thật nhỏ và một điều thật thật lòng.",
-    "Từ khi hai đứa mình trò chuyện, mỗi ngày của mình đều có thêm một lý do để mỉm cười.",
-    "Mình không giỏi nói những lời hoa mỹ, nên mình làm một trang web nhỏ này để nói thay mình.",
+    "Nhân ngày 20/10, anh muốn gửi em một lời chúc thật nhỏ và một điều thật thật lòng.",
+    "Từ khi hai đứa trò chuyện, mỗi ngày của anh đều có thêm một lý do để mỉm cười.",
+    "Anh không giỏi nói những lời hoa mỹ, nên anh làm một trang web nhỏ này để nói thay.",
     "— {tenBan}"
   ],
 
@@ -233,10 +233,10 @@ const CONFIG = {
   ],
 
   // 7) Lời trong hộp quà bất ngờ
-  thiepCuoi: "Chúc {ten} 20/10 luôn xinh đẹp và hạnh phúc!\nMình hứa sẽ từ từ, chân thành và luôn tôn trọng bạn.\nCuối tuần này mình mời bạn đi uống trà sữa nhé? 🧋\n\n— {tenBan}",
+  thiepCuoi: "Chúc {ten} 20/10 luôn xinh đẹp và hạnh phúc!\nMình hứa sẽ từ từ, chân thành và luôn tôn trọng từng khoảng khắc với em.\nCuối tuần này mình uống trà sữa nha? 🧋\n\n— {tenBan}",
 
   // 8) Lời cuối khi bấm "Để mình suy nghĩ" sau 5 lần nút chạy trốn
-  thuBuon: "Mình hiểu rồi... 🌧️\n\nCảm ơn {ten} vì đã dành thời gian trò chuyện cùng mình, vì những lần mình được cười, và vì đã luôn tử tế với mình.\n\nMình hơi buồn một chút, nhưng mình ổn thật mà, bạn đừng lo nhé 🙂 Mình không hối hận vì đã nói ra, và mong tụi mình vẫn có thể là bạn tốt của nhau.\n\nMong {ten} luôn vui và thật hạnh phúc. Cảm ơn bạn vì mọi thứ.\n\n— {tenBan}"
+  thuBuon: "Anh hiểu rồi... \n\nCảm ơn em vì đã dành thời gian trò chuyện cùng anh, vì đã luôn tử tế với mình.\n\nANh hơi buồn một chút, nhưng không sao :), đừng lo nhé 🙂 Anh không hối hận vì đã nói ra, mong tụi mình vẫn có thể nói chuyện với nhau.\n\nMong em luôn vui và thật hạnh phúc. Cảm ơn em vì mọi thứ.\n\n"
 };
 
 /* =====================================================
@@ -399,7 +399,7 @@ function tron(){
     $("khong").textContent = "Xin lỗi, mình chưa sẵn sàng";
   }
 }
-const LAN_TRON_TOI_DA = 5;   // ✏️ đổi số này nếu muốn nút chạy nhiều/ít lần hơn
+const LAN_TRON_TOI_DA = 8;   // ✏️ đổi số này nếu muốn nút chạy nhiều/ít lần hơn
 $("khong").addEventListener("mouseenter", () => { if(lanTron < LAN_TRON_TOI_DA) tron(); });
 $("khong").addEventListener("touchstart", e => { if(lanTron < LAN_TRON_TOI_DA){ e.preventDefault(); tron(); } });
 $("khong").addEventListener("click", () => { lanTron < LAN_TRON_TOI_DA ? tron() : ketThucBuon(); });
@@ -455,11 +455,11 @@ function quayLai(){            // đưa mọi thứ về như ban đầu, quay v
 }
 function thoat(){              // hiện lời tạm biệt rồi đóng tab
   if(buonMode){
-    $("tam-biet-tieu-de").textContent = "Cảm ơn vì tất cả 🌙";
-    $("tam-biet-chu").textContent = "Mình ổn nhé. Chúc bạn luôn bình an và hạnh phúc.";
+    $("tam-biet-tieu-de").textContent = "Cảm ơn em";
+    $("tam-biet-chu").textContent = "Anh ổn nhé. Chúc em luôn bình an và hạnh phúc.";
   } else {
     $("tam-biet-tieu-de").textContent = "Hẹn gặp lại nhé 💗";
-    $("tam-biet-chu").textContent = "Chúc bạn một ngày 20/10 thật vui! 🌹";
+    $("tam-biet-chu").textContent = "Chúc em một ngày 20/10 thật vui! 🌹";
     phaoHoa();
   }
   chuyen("m8");
