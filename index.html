@@ -147,7 +147,7 @@ body.buon #nhac{background:#dfe3f0}
 
 <!-- ============ MÀN 5: CÂU HỎI ============ -->
 <section class="screen" id="m5">
-  <h1>Ạnh có thể là người đặc biệt của <span class="ten"></span> không? ☺️</h1>
+  <h1>Anh có thể là người đặc biệt của <span class="ten"></span> không? ☺️</h1>
   <p class="phu" id="goi-y"> Hồi hộp lắm đó...</p>
   <div class="hang">
     <button class="btn" id="co">Có 💖</button>
@@ -195,16 +195,16 @@ body.buon #nhac{background:#dfe3f0}
 const CONFIG = {
   // 1) Tên: thay "___" bằng tên thật
   tenNguoiNhan: "Vy",
-  tenCuaBan: "Tiến",
+  tenCuaBan: "Miracle",
 
   // 2) Ngày hai bạn bắt đầu quen (định dạng: năm-tháng-ngày)
-  ngayQuenNhau: "2026-08-01",
+  ngayQuenNhau: "2026-06-27",
 
   // 3) Nhạc: bỏ 3 file mp3 vào thư mục "music" rồi sửa tên ở đây
   nhac: {
     truoc:      "music/music2.mp3",      // phát từ lúc mở thư đến lúc hỏi tỏ tình
     dongY:      "music/music2.mp3",     // phát khi bấm "Có" (kết thúc vui)
-    khongDongY: "music/khong-dong-y.mp3" // phát khi bấm "Để mình suy nghĩ" (kết thúc buồn)
+    khongDongY: "music/music3.mp3" // phát khi bấm "Để mình suy nghĩ" (kết thúc buồn)
   },
 
   // 4) Ảnh: bỏ ảnh vào thư mục "images" rồi sửa tên + lời chú thích
@@ -225,18 +225,18 @@ const CONFIG = {
 
   // 6) Các lý do thích bạn
   lyDo: [
-    "Nụ cười của bạn làm mình quên hết mệt mỏi 😊",
-    "Bạn luôn biết lắng nghe và quan tâm người khác 💞",
-    "Nói chuyện với bạn, thời gian trôi nhanh lắm ⏰",
-    "Bạn làm những điều bình thường trở nên đáng nhớ 🌷",
-    "Và đơn giản là... mình thích bạn 💗"
+    "Những lần trò chuyện cùng em làm anh quên hết mệt mỏi😚 😊",
+    "Em và anh có vài điểm chung, thích và ghét nhiều thứ 💞",
+    "Nói chuyện với em, thời gian trôi nhanh lắm ⏰",
+    "EM làm những điều bình thường trở nên đáng nhớ 🌷",
+    "Và đơn giản là... anh thích em 💗"
   ],
 
   // 7) Lời trong hộp quà bất ngờ
-  thiepCuoi: "Chúc {ten} 20/10 luôn xinh đẹp và hạnh phúc!\nMình hứa sẽ từ từ, chân thành và luôn tôn trọng từng khoảng khắc với em.\nCuối tuần này mình uống trà sữa nha? 🧋\n\n— {tenBan}",
+  thiepCuoi: "Chúc {ten} 20/10 luôn xinh đẹp và hạnh phúc!\nAnh hứa sẽ từ từ, chân thành và luôn tôn trọng từng khoảng khắc với em.\nCuối tuần này mình uống trà sữa nha? 🧋\n\n— {tenBan}",
 
   // 8) Lời cuối khi bấm "Để mình suy nghĩ" sau 5 lần nút chạy trốn
-  thuBuon: "Anh hiểu rồi... \n\nCảm ơn em vì đã dành thời gian trò chuyện cùng anh, vì đã luôn tử tế với mình.\n\nANh hơi buồn một chút, nhưng không sao :), đừng lo nhé 🙂 Anh không hối hận vì đã nói ra, mong tụi mình vẫn có thể nói chuyện với nhau.\n\nMong em luôn vui và thật hạnh phúc. Cảm ơn em vì mọi thứ.\n\n"
+  thuBuon: "Anh hiểu rồi... \n\nCảm ơn em vì đã dành thời gian trò chuyện cùng anh, vì đã luôn tử tế với mình.\n\nAnh hơi buồn một chút, nhưng không sao :), đừng lo nhé 🙂 Anh không hối hận vì đã nói ra, mong tụi mình vẫn có thể nói chuyện với nhau.\n\nMong em luôn vui và thật hạnh phúc. Cảm ơn em vì mọi thứ😁.\n\n"
 };
 
 /* =====================================================
@@ -385,7 +385,7 @@ $("ly-do-tiep").onclick = () => {
 $("tiep4").onclick = () => chuyen("m5");
 
 // ---------- Màn 5: câu hỏi (nút "Để mình suy nghĩ" chạy trốn) ----------
-const loiTu = ["Thật không đó? 🥺","Nghĩ lại đi mà~","Mình buồn đó nha 😢","Bấm 'Có' đi mà 💖","Không chạy thoát được đâu 😆"];
+const loiTu = ["Thật không đó? 🥺","Nghĩ lại đi mà~","Shock lắm á 😢","Bấm 'Có' đi mà 💖","🥺🥺🥺🥺"];
 let lanTron = 0, coScale = 1;
 function tron(){
   const k = $("khong");
@@ -447,7 +447,7 @@ function quayLai(){            // đưa mọi thứ về như ban đầu, quay v
   const k = $("khong");
   k.style.position = ""; k.style.left = ""; k.style.top = "";
   k.textContent = "Để mình suy nghĩ";
-  $("goi-y").textContent = "Mình đã hồi hộp lắm đó...";
+  $("goi-y").textContent = "Anh đã hồi hộp lắm đó...";
   $("dem-nguoc").style.display = ""; $("dem-nguoc").textContent = "";
   $("bat-ngo").classList.add("an"); $("thiep").classList.add("an");
   $("qua").textContent = "🎁"; $("qua-goi-y").style.display = "";
