@@ -200,8 +200,12 @@ const CONFIG = {
   // 2) Ngày hai bạn bắt đầu quen (định dạng: năm-tháng-ngày)
   ngayQuenNhau: "2026-08-01",
 
-  // 3) Nhạc: bỏ file mp3 vào thư mục "music" rồi sửa tên ở đây
-  nhac: "music/nhac.mp3",
+  // 3) Nhạc: bỏ 3 file mp3 vào thư mục "music" rồi sửa tên ở đây
+  nhac: {
+    truoc:      "music/truoc.mp3",      // phát từ lúc mở thư đến lúc hỏi tỏ tình
+    dongY:      "music/dong-y.mp3",     // phát khi bấm "Có" (kết thúc vui)
+    khongDongY: "music/khong-dong-y.mp3" // phát khi bấm "Để mình suy nghĩ" (kết thúc buồn)
+  },
 
   // 4) Ảnh: bỏ ảnh vào thư mục "images" rồi sửa tên + lời chú thích
   anh: [
@@ -250,26 +254,34 @@ function chuyen(id){
 
 // ---------- Nhạc ----------
 const audio = $("audio");
-audio.src = CONFIG.nhac;
+audio.src = CONFIG.nhac.truoc;
 let nhacBat = false;
+let nguoiTat = false;   // true nếu người xem tự bấm tắt nhạc (sẽ không tự bật lại khi đổi bài)
 function batNhac(){ audio.play().then(()=>{nhacBat=true;$("nhac").textContent="🎵"}).catch(()=>{}); }
+function doiNhac(duongDan){   // đổi sang bài khác và phát luôn
+  audio.src = duongDan;
+  audio.currentTime = 0;
+  if(!nguoiTat) batNhac();
+}
 $("nhac").onclick = () => {
-  if(nhacBat){ audio.pause(); nhacBat=false; $("nhac").textContent="🔇"; } else batNhac();
+  if(nhacBat){ audio.pause(); nhacBat=false; nguoiTat=true; $("nhac").textContent="🔇"; }
+  else { nguoiTat=false; batNhac(); }
 };
 
 // ---------- Hiệu ứng tim rơi + pháo hoa ----------
 const cv = $("fx"), ctx = cv.getContext("2d");
 let hat = [];
+const TOC_DO = 2.5;     // ✏️ TỐC ĐỘ HIỆU ỨNG NỀN: 1 = chậm như cũ, 2.5 = nhanh hơn, 4 = rất nhanh
 let buonMode = false;   // true = đang ở màn buồn (mưa rơi)
 function taoHatBuon(){  // tim vỡ, hoa héo rơi chậm
-  hat.push({x:Math.random()*cv.width,y:-30,vx:Math.random()-.5,vy:.4+Math.random()*.6,
+  hat.push({x:Math.random()*cv.width,y:-30,vx:Math.random()-.5,vy:(.4+Math.random()*.6)*TOC_DO,
     s:16+Math.random()*10,r:0,vr:(Math.random()-.5)*.02,g:0,song:1e9,ch:Math.random()<.5?"💔":"🥀"});
 }
 function coKichThuoc(){ cv.width = innerWidth; cv.height = innerHeight; }
 coKichThuoc(); addEventListener("resize", coKichThuoc);
 const bieuTuong = ["💗","🌸","💖","🌷","✿"];
 function taoHatRoi(){
-  hat.push({x:Math.random()*cv.width,y:-30,vx:Math.random()-.5,vy:.6+Math.random()*1.2,
+  hat.push({x:Math.random()*cv.width,y:-30,vx:(Math.random()-.5)*TOC_DO,vy:(.6+Math.random()*1.2)*TOC_DO,
     s:14+Math.random()*16,r:0,vr:(Math.random()-.5)*.03,g:0,song:1e9,ch:bieuTuong[Math.floor(Math.random()*5)]});
 }
 function phaoHoa(){ // bắn tim tung toé
@@ -284,8 +296,8 @@ function ve(){
   if(buonMode){
     for(let k=0;k<4;k++) hat.push({x:Math.random()*(cv.width+200),y:-20,vx:-2,vy:13+Math.random()*6,
       s:0,r:0,vr:0,g:0,song:1e9,mua:true,ch:""});
-    if(Math.random()<.025) taoHatBuon();
-  } else if(Math.random()<.08) taoHatRoi();
+    if(Math.random()<.025*TOC_DO) taoHatBuon();
+  } else if(Math.random()<.08*TOC_DO) taoHatRoi();
   hat = hat.filter(p => p.y < cv.height+40 && p.song > 0);
   for(const p of hat){
     p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.r+=p.vr; p.song--;
@@ -379,7 +391,7 @@ $("khong").addEventListener("click", () => { lanTron < LAN_TRON_TOI_DA ? tron() 
 function ketThucBuon(){
   buonMode = true; hat = [];
   document.body.classList.add("buon");
-  audio.volume = .35;                      // nhạc nhỏ lại
+  doiNhac(CONFIG.nhac.khongDongY);         // phát nhạc buồn
   chuyen("m7");
   const el = $("noi-dung-buon"), chu = thayTen(CONFIG.thuBuon);
   let i = 0;
@@ -389,7 +401,7 @@ function ketThucBuon(){
     if(i < chu.length) setTimeout(go, 55); else $("nut-buon").classList.remove("an");
   })();
 }
-$("co").onclick = () => { chuyen("m6"); batNgo(); };
+$("co").onclick = () => { doiNhac(CONFIG.nhac.dongY); chuyen("m6"); batNgo(); };
 
 // ---------- Màn 6: bất ngờ cuối ----------
 function batNgo(){
@@ -413,7 +425,7 @@ $("qua").onclick = () => {
 function quayLai(){            // đưa mọi thứ về như ban đầu, quay về màn câu hỏi
   buonMode = false; hat = [];
   document.body.classList.remove("buon");
-  audio.volume = 1;
+  doiNhac(CONFIG.nhac.truoc);              // về lại nhạc ban đầu
   lanTron = 0; coScale = 1; $("co").style.transform = "";
   const k = $("khong");
   k.style.position = ""; k.style.left = ""; k.style.top = "";
