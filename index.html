@@ -196,11 +196,11 @@ body.buon #nhac{background:#dfe3f0}
    ===================================================== */
 const CONFIG = {
   // 1) Tên: thay "___" bằng tên thật
-  tenNguoiNhan: "Vy",
-  tenCuaBan: "Miracle",
+  tenNguoiNhan: "___",
+  tenCuaBan: "____",
 
   // 2) Ngày hai bạn bắt đầu quen (định dạng: năm-tháng-ngày)
-  ngayQuenNhau: "2026-06-27",
+  ngayQuenNhau: "00-00-0000",
 
   // 3) Nhạc: bỏ 3 file mp3 vào thư mục "music" rồi sửa tên ở đây
   nhac: {
@@ -213,6 +213,7 @@ const CONFIG = {
   anh: [
     { src: "images/image1.jpg", chuThich: "Ảnh nhìn cute thíeee" },
     { src: "images/image2.jpg", chuThich: "Ngầu quá" },
+    { src: "images/image3.jpg", chuThich: "Chữ ở đây" },
     
   ],
 
@@ -238,7 +239,9 @@ const CONFIG = {
   thiepCuoi: "Chúc {ten} 20/10 luôn xinh đẹp và hạnh phúc!\nAnh hứa sẽ từ từ, chân thành và luôn tôn trọng từng khoảng khắc với em.\nCuối tuần này mình uống trà sữa nha? 🧋\n\n— {tenBan}",
 
   // 8) Lời cuối khi bấm "Để mình suy nghĩ" sau 5 lần nút chạy trốn
-  thuBuon: "Anh hiểu rồi... \n\nCảm ơn em vì đã dành thời gian trò chuyện cùng anh, vì đã luôn tử tế với mình.\n\nAnh hơi buồn một chút, nhưng không sao :), đừng lo nhé 🙂 Anh không hối hận vì đã nói ra, mong tụi mình vẫn có thể nói chuyện với nhau.\n\nMong em luôn vui và thật hạnh phúc. Cảm ơn em vì mọi thứ😁.\n\n"
+  thuBuon: "Anh hiểu rồi... \n\nCảm ơn em vì đã dành thời gian trò chuyện cùng anh, vì đã luôn tử tế với mình.\n\nAnh hơi buồn một chút, nhưng không sao :), đừng lo nhé 🙂 Anh không hối hận vì đã nói ra, mong tụi mình vẫn có thể nói chuyện với nhau.\n\nMong em luôn vui và thật hạnh phúc. Cảm ơn em vì mọi thứ😁.\n\n",
+//
+  thongBao: { accessKey: "3b5b0b59-2aae-499f-921e-5a287d4c07cd" },
 };
 
 /* =====================================================
@@ -472,6 +475,9 @@ function thoat(){              // hiện lời tạm biệt rồi đóng tab
 }
 $("quay-vui").onclick = quayLai;  $("thoat-vui").onclick = thoat;
 $("quay-buon").onclick = quayLai; $("thoat-buon").onclick = thoat;
+
+
+
 </script>
 </body>
 </html>
